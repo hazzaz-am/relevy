@@ -1,9 +1,16 @@
 import { TypeSafeClient, noul, AuthenticationError, RateLimitError } from "@typesafe-ai/sdk";
 
-/*
- * One Jev request per post: every topic becomes a yes/no (noul) question,
- * and Jev answers them all in parallel in a single call.
- * answers[name].noul is the probability of "yes", from 0 to 1.
+/**
+ * Creates a Jev scorer function that scores a single post against multiple topics in parallel.
+ * One Jev request per post: every topic becomes a yes/no (noul) question.
+ *
+ * @param {Object} options
+ * @param {string} options.apiKey
+ * @param {string} options.model
+ * @param {string} [options.baseURL]
+ * @param {number} [options.timeoutMs=15000]
+ * @param {boolean} [options.isOpenRouter=false]
+ * @returns {(post: { text: string, site?: string }, topics: string[]) => Promise<{ probs: Record<string, number>, usage: any }>}
  */
 export function createJevScorer({ apiKey, model, baseURL, timeoutMs = 15000, isOpenRouter = false }) {
   const defaultHeaders = {};

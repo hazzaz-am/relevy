@@ -37,7 +37,7 @@ const KEYWORDS = {
   celebrity: ["celebrity", "celebrities", "kardashian", "taylor swift", "red carpet", "gossip", "dating rumors"],
 };
 
-function escape(s) {
+function escapeRegex(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
@@ -56,7 +56,7 @@ export function demoScorePost(post, topics) {
   for (const topic of topics) {
     let hits = 0;
     for (const kw of keywordsFor(topic)) {
-      const re = new RegExp(`(^|[^\\p{L}\\p{N}])${escape(kw)}([^\\p{L}\\p{N}]|$)`, "u");
+      const re = new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRegex(kw)}([^\\p{L}\\p{N}]|$)`, "u");
       if (re.test(text)) hits++;
     }
     // 0 hits -> 0.04, 1 -> ~0.75, 2 -> ~0.94, 3+ -> ~0.99
