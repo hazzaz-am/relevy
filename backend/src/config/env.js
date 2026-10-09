@@ -1,38 +1,10 @@
-import { existsSync, readFileSync } from "node:fs";
 import { z } from "zod";
 
-/**
- * Safe .env file loader with comment stripping.
- * Uses native process.loadEnvFile when available, with a resilient fallback.
- */
-function loadEnv() {
-  const envUrl = new URL("../../.env", import.meta.url);
-  if (!existsSync(envUrl)) return;
-
-  if (typeof process.loadEnvFile === "function") {
-    try {
-      process.loadEnvFile(envUrl);
-      return;
-    } catch {
-      // Fallback to manual parser below if native loader throws
-    }
-  }
-
-  const content = readFileSync(envUrl, "utf8");
-  for (const rawLine of content.split(/\r?\n/)) {
-    const line = rawLine.trim();
-    if (!line || line.startsWith("#")) continue;
-
-    // Strip trailing inline comments: KEY=VALUE # comment -> KEY=VALUE
-    const cleanLine = line.replace(/\s+#.*$/, "");
-    const match = cleanLine.match(/^([A-Z0-9_]+)\s*=\s*(.*?)$/);
-    if (match && process.env[match[1]] === undefined) {
-      process.env[match[1]] = match[2].replace(/^["']|["']$/g, "").trim();
-    }
-  }
+try {
+  process.loadEnvFile(new URL("../../.env", import.meta.url));
+} catch (err) {
+  if (err.code !== "ENOENT") throw err;
 }
-
-loadEnv();
 
 const sanitizeNumber = (defaultValue, min = 1, max = 65535) =>
   z.preprocess(
