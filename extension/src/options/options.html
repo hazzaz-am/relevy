@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relevy settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header class="intro">
+      <h1>Relevy</h1>
+      <p>Tell Jev what you care about. It scores every post in your feeds, hides what you don't want and highlights what you do. It also learns from the ▲ / ▼ buttons you see when you hover a post.</p>
+      <p id="server-banner" class="banner" hidden></p>
+    </header>
+
+    <section class="panel">
+      <h2>Quick start: tap topics you care about</h2>
+      <p class="hint">Click once to mark as interest, Shift-click to mark as not interested.</p>
+      <div id="quick-topics" class="chips"></div>
+    </section>
+
+    <div class="pair">
+      <section class="panel">
+        <h2>Show me more</h2>
+        <form class="add-row" id="form-show">
+          <input id="input-show" type="text" maxlength="40" placeholder="e.g. rust, climate tech" aria-label="Topic to see more of" autocomplete="off">
+          <select id="strength-show" aria-label="Strength"></select>
+          <button type="submit" class="btn-primary">Add</button>
+        </form>
+        <div id="list-show" class="chips"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Hide posts about</h2>
+        <form class="add-row" id="form-hide">
+          <input id="input-hide" type="text" maxlength="40" placeholder="e.g. crypto, celebrity gossip" aria-label="Topic to hide" autocomplete="off">
+          <select id="strength-hide" aria-label="Strength"></select>
+          <button type="submit" class="btn-primary">Add</button>
+        </form>
+        <div id="list-hide" class="chips"></div>
+      </section>
+    </div>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>What Jev has learned</h2>
+        <button type="button" id="forget" class="btn-danger">Forget learned signals</button>
+      </div>
+      <p class="hint">Words from posts you ▲ / ▼ or opened. Click × to drop one.</p>
+      <div class="learned">
+        <div>
+          <h3>Leans toward</h3>
+          <div id="learned-up" class="chips small"></div>
+        </div>
+        <div>
+          <h3>Leans away from</h3>
+          <div id="learned-down" class="chips small"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Behavior</h2>
+
+      <h3>Hidden posts</h3>
+      <div class="segmented" role="radiogroup" aria-label="Hidden posts" data-setting="hiddenMode">
+        <button type="button" role="radio" data-value="collapse">Collapse to a thin bar</button>
+        <button type="button" role="radio" data-value="remove">Remove completely</button>
+      </div>
+
+      <h3>How picky should Jev be?</h3>
+      <div class="segmented" role="radiogroup" aria-label="Filtering strength" data-setting="strictness">
+        <button type="button" role="radio" data-value="relaxed">Relaxed</button>
+        <button type="button" role="radio" data-value="balanced">Balanced</button>
+        <button type="button" role="radio" data-value="strict">Strict</button>
+      </div>
+      <p class="hint" id="strictness-hint"></p>
+
+      <label class="toggle">
+        <span><strong>Highlight posts Jev thinks you'll like</strong><small>Adds a thin accent bar on the left edge.</small></span>
+        <input type="checkbox" role="switch" data-setting="highlight">
+      </label>
+      <label class="toggle">
+        <span><strong>Show the score on hover</strong><small>The Jev score pill with ▲ / ▼ in the corner of each post.</small></span>
+        <input type="checkbox" role="switch" data-setting="showBadge">
+      </label>
+      <label class="toggle">
+        <span><strong>Learn from the links I open</strong><small>Opening a link inside a post counts as a small ▲.</small></span>
+        <input type="checkbox" role="switch" data-setting="learnFromLinks">
+      </label>
+      <label class="toggle">
+        <span><strong>Always hide ads</strong><small>Sponsored posts are hidden even when they match your interests.</small></span>
+        <input type="checkbox" role="switch" data-setting="hideAds">
+      </label>
+    </section>
+
+    <section class="panel">
+      <h2>Sites</h2>
+      <label class="toggle">
+        <span><strong>X</strong><small>Home, lists and search timelines.</small></span>
+        <input type="checkbox" role="switch" data-site="x">
+      </label>
+      <label class="toggle">
+        <span><strong>YouTube</strong><small>Home, subscriptions, search and the watch-page sidebar.</small></span>
+        <input type="checkbox" role="switch" data-site="youtube">
+      </label>
+      <label class="toggle">
+        <span><strong>Facebook</strong><small>News feed and groups.</small></span>
+        <input type="checkbox" role="switch" data-site="facebook">
+      </label>
+    </section>
+
+    <section class="panel">
+      <h2>Try a post</h2>
+      <p class="hint">Paste any post text to see how Jev would score it with your current topics.</p>
+      <textarea id="try-text" rows="3" placeholder="WebMCP changes everything for AI agents in the browser"></textarea>
+      <div class="try-row">
+        <button type="button" id="try-run" class="btn-primary">Score this post</button>
+        <output id="try-result" aria-live="polite"></output>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Server</h2>
+      <p class="hint">Relevy sends post text to this server, which asks Jev. Your Jev API key stays on the server.</p>
+      <form class="add-row" id="form-server">
+        <input id="server-url" type="url" required aria-label="Server URL" placeholder="http://localhost:8787">
+        <button type="submit" class="btn-primary">Save and check</button>
+      </form>
+      <p id="server-status" class="status" aria-live="polite">Checking…</p>
+      <button type="button" id="clear-cache" class="btn-quiet">Clear saved scores</button>
+    </section>
+  </main>
+
+  <script src="../lib/scoring.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

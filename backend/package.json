@@ -1,0 +1,16 @@
+{
+  "name": "relevy-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Relevy backend: scores social posts with Jev and keeps the API key off the extension.",
+  "main": "server.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@typesafe-ai/sdk": "^0.6.0"
+  }
+}

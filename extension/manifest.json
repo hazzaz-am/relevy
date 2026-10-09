@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Relevy",
+  "version": "0.1.0",
+  "description": "Tell Jev what you care about. Relevy hides the noise on X, YouTube and Facebook and highlights what you want.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Relevy settings",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "options_page": "src/options/options.html",
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "permissions": ["storage"],
+  "host_permissions": [
+    "http://localhost:8787/*",
+    "https://api.relevy.example/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*", "https://mobile.x.com/*"],
+      "js": ["src/lib/scoring.js", "src/content/core.js", "src/content/sites/x.js"],
+      "css": ["src/content/relevy.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.youtube.com/*", "https://m.youtube.com/*"],
+      "js": ["src/lib/scoring.js", "src/content/core.js", "src/content/sites/youtube.js"],
+      "css": ["src/content/relevy.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.facebook.com/*", "https://web.facebook.com/*"],
+      "js": ["src/lib/scoring.js", "src/content/core.js", "src/content/sites/facebook.js"],
+      "css": ["src/content/relevy.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
