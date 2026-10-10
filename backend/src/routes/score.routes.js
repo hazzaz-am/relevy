@@ -8,8 +8,8 @@ const router = Router();
 
 router.post(
   "/v1/score",
-  rateLimiterMiddleware,
   validateBody(scoreRequestSchema),
+  rateLimiterMiddleware,
   ScoreController.scorePosts
 );
 

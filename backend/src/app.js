@@ -8,6 +8,9 @@ const app = express();
 // Disable x-powered-by header
 app.disable("x-powered-by");
 
+// Trust first reverse proxy hop (e.g. Nginx, Cloudflare, ALB)
+app.set("trust proxy", 1);
+
 // CORS & Preflight handling
 app.use(corsMiddleware);
 
